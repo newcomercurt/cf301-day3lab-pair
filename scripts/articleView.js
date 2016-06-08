@@ -45,8 +45,9 @@ articleView.handleAuthorFilter = function() {
   // DONE: If the select box was changed to an option that is blank, we should
   //       show all the articles, except the one article we are using as a template.
     } else {
-      $('article').show();
-
+      $('article:not(.template)').show();
+      // $('article').show();
+      // $('.template').hide();
     }
     $('#category-filter').val('');
   });
@@ -57,6 +58,23 @@ articleView.handleCategoryFilter = function() {
   //       When an option with a value is selected, hide all the articles, then reveal the matches.
   //       When the blank (default) option is selected, show all the articles, except for the template.
   //       Be sure to reset the #author-filter while you are at it!
+  $('#category-filter').on('change', function() {
+    if ($(this).val()) {
+      var selectedCategory = $(this).val();
+      $('article').each(function() {
+        $(this).data('category');
+        var category = $(this).data('category');
+        if (category === selectedCategory) {
+          $(this).fadeIn('slow');
+        } else {
+          $(this).hide();
+        }
+      });
+    } else {
+      $('article').show();
+    }
+    $('#author-filter').val('');
+  });
 
 };
 
